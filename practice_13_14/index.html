@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Заметки PWA (13-14)</title>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#4285f4">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="/icons/favicon-128x128.png">
+  <link rel="stylesheet" href="https://unpkg.com/chota@latest">
+</head>
+<body class="container">
+  <h1>Заметки (Практики 13-14)</h1>
+  <p>Работает офлайн: список сохраняется в localStorage.</p>
+  <form id="note-form" class="row">
+    <input class="col-9" id="note-input" type="text" placeholder="Введите заметку" required>
+    <button class="col-3" type="submit">Добавить</button>
+  </form>
+  <ul id="notes-list"></ul>
+  <script src="/app.js"></script>
+</body>
+</html>
