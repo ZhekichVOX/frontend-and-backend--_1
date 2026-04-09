@@ -41,7 +41,16 @@ function initNotes() {
 
   const loadNotes = () => {
     const notes = JSON.parse(localStorage.getItem("notes") || "[]");
-    list.innerHTML = notes.map((n) => `<li class="card">${n.text}</li>`).join("");
+    list.innerHTML = notes
+      .map(
+        (n) => `
+          <li class="card row" style="align-items:center; gap:8px;">
+            <span class="col-9">${n.text}</span>
+            <button class="col-3 button error" type="button" data-delete-id="${n.id}">Удалить</button>
+          </li>
+        `
+      )
+      .join("");
   };
 
   const addNote = (text) => {
@@ -53,12 +62,27 @@ function initNotes() {
     socket.emit("newTask", { text, timestamp: Date.now() });
   };
 
+  const deleteNote = (id) => {
+    const notes = JSON.parse(localStorage.getItem("notes") || "[]");
+    const nextNotes = notes.filter((n) => n.id !== id);
+    localStorage.setItem("notes", JSON.stringify(nextNotes));
+    loadNotes();
+  };
+
   form.addEventListener("submit", (e) => {
     e.preventDefault();
     const text = input.value.trim();
     if (!text) return;
     addNote(text);
     input.value = "";
+  });
+
+  list.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-delete-id]");
+    if (!btn) return;
+    const id = Number(btn.dataset.deleteId);
+    if (Number.isNaN(id)) return;
+    deleteNote(id);
   });
 
   loadNotes();
