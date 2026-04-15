@@ -1,5 +1,5 @@
-const CACHE_NAME = "app-shell-v2";
-const DYNAMIC_CACHE_NAME = "dynamic-content-v1";
+const CACHE_NAME = "app-shell-v3";
+const DYNAMIC_CACHE_NAME = "dynamic-content-v2";
 const ASSETS = [
   "/",
   "/index.html",
