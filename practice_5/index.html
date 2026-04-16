@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo Application</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>📝 Мой список дел</h1>
+            <p>Управляй своими задачами эффективно</p>
+        </header>
+
+        <main class="main">
+            <!-- Форма добавления задачи -->
+            <section class="add-todo">
+                <form id="todoForm" class="form">
+                    <input
+                        type="text"
+                        id="todoInput"
+                        placeholder="Введите новую задачу..."
+                        class="input"
+                        autocomplete="off"
+                    >
+                    <select id="prioritySelect" class="priority-select">
+                        <option value="low">Низкий приоритет</option>
+                        <option value="medium" selected>Средний</option>
+                        <option value="high">Высокий</option>
+                    </select>
+                    <button type="submit" class="btn btn-add">Добавить</button>
+                </form>
+            </section>
+
+            <!-- Статистика -->
+            <section class="stats">
+                <div class="stat-item">
+                    <span class="stat-label">Всего:</span>
+                    <span class="stat-value" id="totalCount">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Активных:</span>
+                    <span class="stat-value active" id="activeCount">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Выполнено:</span>
+                    <span class="stat-value completed" id="completedCount">0</span>
+                </div>
+            </section>
+
+            <!-- Фильтры -->
+            <section class="filters">
+                <button class="filter-btn active" data-filter="all">Все</button>
+                <button class="filter-btn" data-filter="active">Активные</button>
+                <button class="filter-btn" data-filter="completed">Выполненные</button>
+                <button class="filter-btn" data-filter="high">Высокий приоритет</button>
+            </section>
+
+            <!-- Список задач -->
+            <section class="todos-section">
+                <ul class="todos-list" id="todosList">
+                    <!-- Задачи добавляются здесь -->
+                </ul>
+                <div class="empty-state" id="emptyState">
+                    <p>📭 Нет задач. Добавьте новую!</p>
+                </div>
+            </section>
+
+            <!-- Кнопка очистки -->
+            <section class="actions">
+                <button id="clearCompleted" class="btn btn-danger">Очистить выполненные</button>
+                <button id="clearAll" class="btn btn-danger">Удалить всё</button>
+            </section>
+        </main>
+    </div>
+
+    <script src="./script.js"></script>
+</body>
+</html>

@@ -50,13 +50,104 @@ self.addEventListener("fetch", (event) => {
 });
 
 self.addEventListener("push", (event) => {
-  let data = { title: "Новая задача", body: "Добавлена новая задача" };
-  if (event.data) data = event.data.json();
+  console.log("🔔 Push событие получено", event);
+  
+  let data = { 
+    title: "Новая задача", 
+    body: "Добавлена новая задача",
+    icon: "/icons/favicon-128x128.png",
+    badge: "/icons/favicon-32x32.png",
+    id: Date.now()
+  };
+  
+  try {
+    if (event.data) {
+      data = event.data.json();
+      if (!data.id) data.id = Date.now();
+    }
+  } catch (error) {
+    console.error("❌ Ошибка парсинга push данных:", error);
+  }
+  
   event.waitUntil(
     self.registration.showNotification(data.title, {
       body: data.body,
-      icon: "/icons/favicon-128x128.png",
-      badge: "/icons/favicon-32x32.png",
+      icon: data.icon || "/icons/favicon-128x128.png",
+      badge: data.badge || "/icons/favicon-32x32.png",
+      tag: "new-task-notification",
+      requireInteraction: false,
+      data: { taskText: data.body, id: data.id },
+      actions: [
+        { action: "snooze-5", title: "⏰ 5 мин" },
+        { action: "snooze-10", title: "⏰ 10 мин" },
+        { action: "snooze-15", title: "⏰ 15 мин" },
+        { action: "open", title: "✓ Открыть" }
+      ]
+    }).then(() => {
+      console.log("✅ Уведомление показано успешно");
+    }).catch((error) => {
+      console.error("❌ Ошибка показа уведомления:", error);
     })
   );
 });
+
+// Обработка действий уведомления
+self.addEventListener("notificationclick", (event) => {
+  const { action, notification } = event;
+  const { taskText, id } = notification.data || {};
+
+  if (action === "snooze-5") {
+    console.log("⏰ Отложено на 5 минут");
+    handleSnooze(taskText, 5 * 60 * 1000, id);
+    notification.close();
+  } else if (action === "snooze-10") {
+    console.log("⏰ Отложено на 10 минут");
+    handleSnooze(taskText, 10 * 60 * 1000, id);
+    notification.close();
+  } else if (action === "snooze-15") {
+    console.log("⏰ Отложено на 15 минут");
+    handleSnooze(taskText, 15 * 60 * 1000, id);
+    notification.close();
+  } else if (action === "open") {
+    notification.close();
+    event.waitUntil(
+      clients.matchAll({ type: "window", includeUncontrolled: true }).then((clientList) => {
+        if (clientList.length > 0) {
+          return clientList[0].focus();
+        }
+        return clients.openWindow("/");
+      })
+    );
+  } else {
+    notification.close();
+    event.waitUntil(
+      clients.matchAll({ type: "window", includeUncontrolled: true }).then((clientList) => {
+        if (clientList.length > 0) {
+          return clientList[0].focus();
+        }
+        return clients.openWindow("/");
+      })
+    );
+  }
+});
+
+// Обработка действия отложения
+async function handleSnooze(taskText, delayMs, taskId) {
+  try {
+    const response = await fetch("/schedule-push", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        text: taskText,
+        delay: delayMs,
+        id: taskId
+      })
+    });
+    
+    if (response.ok) {
+      console.log(`✅ Уведомление отложено на ${delayMs / 60000} минут`);
+    }
+  } catch (error) {
+    console.error("❌ Ошибка откладывания:", error);
+  }
+}

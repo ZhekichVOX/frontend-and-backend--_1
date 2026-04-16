@@ -1,0 +1,13 @@
+{
+  "name": "practice_5",
+  "version": "1.0.0",
+  "description": "Todo Application с фильтрацией и сохранением данных",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx http-server -p 3000 -c-1",
+    "start": "npx http-server -p 3000"
+  },
+  "keywords": ["todo", "app", "localstorage"],
+  "author": "",
+  "license": "ISC"
+}

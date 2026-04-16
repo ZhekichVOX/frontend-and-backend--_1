@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-time Chat</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src="https://cdn.socket.io/4.5.4/socket.io.js"></script>
+</head>
+<body>
+    <!-- Экран входа -->
+    <div id="loginScreen" class="screen">
+        <div class="login-container">
+            <div class="login-box">
+                <h1>💬 Чат</h1>
+                <p>Присоединитесь к нашему сообществу</p>
+                <form id="loginForm" class="form">
+                    <input
+                        type="text"
+                        id="usernameInput"
+                        placeholder="Введите ваше имя..."
+                        maxlength="20"
+                        autocomplete="off"
+                        required
+                    >
+                    <button type="submit" class="btn btn-primary">Войти</button>
+                </form>
+                <p class="info">Напишите своё имя пользователя, чтобы начать общение</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Экран чата -->
+    <div id="chatScreen" class="screen hidden">
+        <div class="chat-container">
+            <!-- Боковая панель -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <h2>Участники</h2>
+                    <span class="user-count" id="userCount">0</span>
+                </div>
+                <ul class="users-list" id="usersList">
+                    <!-- Пользователи добавляются здесь -->
+                </ul>
+                <button id="logoutBtn" class="btn btn-danger">Выход</button>
+            </aside>
+
+            <!-- Основная часть чата -->
+            <main class="chat-main">
+                <!-- Заголовок -->
+                <div class="chat-header">
+                    <h2>Общий чат</h2>
+                    <div class="status online">
+                        <span class="dot"></span>
+                        Онлайн
+                    </div>
+                </div>
+
+                <!-- Область сообщений -->
+                <div class="messages-container">
+                    <div class="messages-list" id="messagesList">
+                        <!-- Сообщения добавляются здесь -->
+                    </div>
+                    <div class="typing-indicator" id="typingIndicator" style="display: none;">
+                        <span></span><span></span><span></span>
+                    </div>
+                </div>
+
+                <!-- Форма отправки сообщения -->
+                <div class="chat-footer">
+                    <form id="messageForm" class="message-form">
+                        <input
+                            type="text"
+                            id="messageInput"
+                            placeholder="Введите сообщение..."
+                            autocomplete="off"
+                        >
+                        <button type="submit" class="btn btn-send">Отправить</button>
+                    </form>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="./script.js"></script>
+</body>
+</html>
